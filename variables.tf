@@ -2,18 +2,6 @@ variable "bastion_ip_address" {
   default = ""
 }
 
-variable "bastion_ssh_user" {
-  default = "root"
-}
-
-variable "bastion_ssh_password" {
-  default = ""
-}
-
-variable "bastion_ssh_private_key" {
-  default = ""
-}
-
 variable "node_ips" {
   type = "list"
   default = []
