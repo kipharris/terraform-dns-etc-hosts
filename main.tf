@@ -36,7 +36,11 @@ resource "null_resource" "sync_etc_hosts" {
       "if [ ! -f /etc/hosts.orig ]; then sudo cp /etc/hosts /etc/hosts.orig; fi",
       "sudo sed -i '/${element(var.node_hostnames, count.index)}/d' /etc/hosts",
       "for i in `cat /tmp/etc_hosts | awk '{print $$1;}'`; do sudo sed -i '/^'$$i' /d' /etc/hosts; done",
-      "cat /tmp/etc_hosts | sudo tee -a /etc/hosts"
+      "cat /tmp/etc_hosts | sudo tee -a /etc/hosts",
+      "sudo test -e /etc/cloud/templates/hosts.redhat.tmpl && sudo sed -i '/{{fqdn}}/d' /etc/cloud/templates/hosts.redhat.tmpl",
+      "sudo test -e /etc/cloud/templates/hosts.redhat.tmpl && sudo sed -i '/${element(var.node_hostnames, count.index)}/d' /etc/cloud/templates/hosts.redhat.tmpl",
+      "sudo test -e /etc/cloud/templates/hosts.redhat.tmpl && for i in `cat /tmp/etc_hosts | awk '{print $$1;}'`; do sudo sed -i '/^'$$i' /d' /etc/cloud/templates/hosts.redhat.tmpl; done",
+      "sudo test -e /etc/cloud/templates/hosts.redhat.tmpl && cat /tmp/etc_hosts | sudo tee -a /etc/cloud/templates/hosts.redhat.tmpl"
     ]
   }
 }
